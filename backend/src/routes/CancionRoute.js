@@ -1,12 +1,12 @@
-const express = require('express');
-const router = express.Router();
-const { crearCancion, obtenerCanciones, actualizarCancion, eliminarCancion } = require('../controllers/CancionController');
-const authMiddleware = require('../middleware/authMiddleware'); 
+import { Router } from "express";
+import { crearCancion, obtenerCanciones, actualizarCancion, eliminarCancion } from "../controllers/CancionController.js";
+import validarToken from "../middlewares/auth.js";
 
-router.get('/', obtenerCanciones);
+const cancionRouter = Router();
 
-router.post('/', authMiddleware, crearCancion);
-router.put('/:id', authMiddleware, actualizarCancion);
-router.delete('/:id', authMiddleware, eliminarCancion);
+cancionRouter.get('/', obtenerCanciones);
+cancionRouter.post('/', validarToken, crearCancion);
+cancionRouter.put('/:id', validarToken, actualizarCancion);
+cancionRouter.delete('/:id', validarToken, eliminarCancion);
 
-module.exports = router;
+export default cancionRouter;

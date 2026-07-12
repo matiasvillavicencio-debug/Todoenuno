@@ -1,38 +1,33 @@
+// frontend/src/pages/Home.jsx
 import React, { useState, useEffect } from 'react';
 
 const Home = () => {
-    const [datos, setDatos] = useState([]);
-    const [cargando, setCargando] = useState(true);
+    const [canciones, setCanciones] = useState([]);
 
     useEffect(() => {
-        const obtenerDatos = async () => {
-            try {
-                const response = await fetch('http://localhost:3000/api/canciones'); 
-                const data = await response.json();
-                
-                setDatos(data);
-                setCargando(false);
-            } catch (error) {
-                console.error("Error al conectar con el backend:", error);
-                setCargando(false);
-            }
-        };
-
-        obtenerDatos();
+        // Asegúrate de que esta URL sea la correcta
+        fetch('http://localhost:3000/api/canciones') 
+            .then(res => res.json())
+            .then(data => {
+                console.log("Datos recibidos:", data); // Mira esto en la consola F12
+                setCanciones(data);
+            })
+            .catch(err => console.error("Error al conectar:", err));
     }, []);
-
-    if (cargando) return <p>Cargando música desde el servidor...</p>;
 
     return (
         <div>
             <h1>Catálogo Musical</h1>
-            <ul>
-                {datos.map((item) => (
-                    <li key={item._id}>
-                        {item.titulo} - {item.artista} ({item.genero})
-                    </li>
-                ))}
-            </ul>
+            {canciones.length === 0 ? (
+                <p>No hay canciones cargadas o error de conexión.</p>
+            ) : (
+                canciones.map(c => (
+                    <div key={c._id}>
+                        <h3>{c.titulo}</h3>
+                        <p>{c.artista}</p>
+                    </div>
+                ))
+            )}
         </div>
     );
 };

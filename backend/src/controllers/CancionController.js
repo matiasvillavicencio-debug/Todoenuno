@@ -1,40 +1,38 @@
-const Cancion = require('../models/CancionModel.js');
+import { cancionModel } from "../models/CancionModel.js";
 
-const crearCancion = async (req, res) => {
+export const crearCancion = async (req, res) => {
     try {
-        const nuevaCancion = new Cancion(req.body);
+        const nuevaCancion = new cancionModel(req.body);
         await nuevaCancion.save();
-        res.status(201).json(nuevaCancion);
+        res.status(201).json({ status: 'ok', data: nuevaCancion });
     } catch (error) {
-        res.status(500).json({ message: "Error al crear", error });
+        res.status(500).json({ status: 'error', msg: "Error al crear", error: error.message });
     }
 };
 
-const obtenerCanciones = async (req, res) => {
+export const obtenerCanciones = async (req, res) => {
     try {
-        const canciones = await Cancion.find();
+        const canciones = await cancionModel.find();
         res.status(200).json(canciones);
     } catch (error) {
-        res.status(500).json({ message: "Error al obtener", error });
+        res.status(500).json({ status: 'error', msg: "Error al obtener", error: error.message });
     }
 };
 
-const actualizarCancion = async (req, res) => {
+export const actualizarCancion = async (req, res) => {
     try {
-        const cancionActualizada = await Cancion.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        res.status(200).json(cancionActualizada);
+        const cancionActualizada = await cancionModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.status(200).json({ status: 'ok', data: cancionActualizada });
     } catch (error) {
-        res.status(500).json({ message: "Error al actualizar", error });
+        res.status(500).json({ status: 'error', msg: "Error al actualizar", error: error.message });
     }
 };
 
-const eliminarCancion = async (req, res) => {
+export const eliminarCancion = async (req, res) => {
     try {
-        await Cancion.findByIdAndDelete(req.params.id);
-        res.status(200).json({ message: "Canción eliminada correctamente" });
+        await cancionModel.findByIdAndDelete(req.params.id);
+        res.status(200).json({ status: 'ok', msg: "Canción eliminada correctamente" });
     } catch (error) {
-        res.status(500).json({ message: "Error al eliminar", error });
+        res.status(500).json({ status: 'error', msg: "Error al eliminar", error: error.message });
     }
 };
-
-module.exports = { crearCancion, obtenerCanciones, actualizarCancion, eliminarCancion };
