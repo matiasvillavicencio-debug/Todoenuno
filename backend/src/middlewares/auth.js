@@ -9,7 +9,6 @@ const validarToken = ( req, res, next) =>{
     if( !token){
         res.status(401).json({ msg: 'No se paso el JWT'});
     }
-    // Verificamos el token
     const jwt = token.split(' ')[1];
     console.log(jwt);
     jsonwebtoken.verify( jwt, SECRET_KEY, (error, decoded) => {
