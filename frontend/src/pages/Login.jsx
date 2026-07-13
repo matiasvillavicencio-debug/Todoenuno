@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MiGifBienvenida from '../assets/Mesirve5.gif';
+import { apiPost } from '../services/api.js';
 
 function Login() {
   const navigate = useNavigate();
@@ -34,20 +35,14 @@ function Login() {
     setErrors({});
 
     try {
-      const response = await fetch('http://localhost:3000/api/users/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
+      const { ok, data } = await apiPost('/users/login', formData);
 
-      const data = await response.json();
-
-      if (response.ok && data.status === 'ok') {
+      if (ok && data?.status === 'ok') {
         setMessage({ text: '¡Sesión iniciada con éxito!', type: 'success' });
         localStorage.setItem('token', data.token);
         setTimeout(() => navigate('/'), 1000); 
       } else {
-        setMessage({ text: data.msg || 'Credenciales incorrectas', type: 'error' });
+        setMessage({ text: data?.msg || 'Credenciales incorrectas', type: 'error' });
       }
     } catch (error) {
       setMessage({ text: 'Error de conexión con el servidor', type: 'error' });

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MiGifBienvenida from '../assets/Mesirve5.gif';
+import { apiPost } from '../services/api.js';
 
 function Register() {
   const navigate = useNavigate();
@@ -52,23 +53,17 @@ function Register() {
     setErrors({});
 
     try {
-      const response = await fetch('http://localhost:3000/api/users/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.username,
-          email: formData.email,
-          password: formData.password
-        })
+      const { ok, data } = await apiPost('/users/register', {
+        name: formData.username,
+        email: formData.email,
+        password: formData.password
       });
 
-      const data = await response.json();
-
-      if (response.ok && data.status === 'ok') {
+      if (ok && data?.status === 'ok') {
         setMessage({ text: '¡Usuario registrado con éxito!', type: 'success' });
         setFormData({ username: '', email: '', password: '', confirmPassword: '' });
       } else {
-        setMessage({ text: data.msg || 'Error al registrar el usuario', type: 'error' });
+        setMessage({ text: data?.msg || 'Error al registrar el usuario', type: 'error' });
       }
     } catch (error) {
       setMessage({ text: 'Error de conexión con el servidor', type: 'error' });
