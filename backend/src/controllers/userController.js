@@ -10,6 +10,13 @@ export const register = async (req, res) => {
         const data = await usuario.save();
         res.status(201).json({ status: 'ok', data: { id: data._id, name: data.name } });
     } catch (error) {
+        if (error.code === 11000) {
+            return res.status(409).json({ status: 'error', msg: 'Ese email ya está registrado' });
+        }
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ status: 'error', msg: error.message });
+        }
+        console.error('Error al registrar:', error);
         res.status(500).json({ status: 'error', msg: 'Error al registrar' });
     }
 };

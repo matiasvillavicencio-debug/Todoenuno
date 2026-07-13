@@ -336,3 +336,72 @@ body {
 .detail-container {
   min-height: 60vh;
 }
+
+.admin-panel {
+  margin-bottom: 50px;
+}
+
+.admin-form {
+  background: #1f2937;
+  border-radius: 18px;
+  padding: 25px;
+  margin-bottom: 30px;
+  border-top: 5px solid #22c55e;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px 20px;
+}
+
+.admin-form .action-bar {
+  grid-column: 1 / -1;
+  margin-top: 10px;
+}
+
+.admin-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-list-item {
+  background: #1f2937;
+  border-radius: 14px;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  border-left: 4px solid #22c55e;
+}
+
+.admin-list-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-list-detail {
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid #4b5563;
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #dc2626;
+}
